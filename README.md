@@ -1,13 +1,63 @@
-## 프로젝트
+# Project E-COMMERCE
 
-## Getting Started
+## 프로젝트 구조
+```
+├── main
+│   ├── java
+│   │   └── kr
+│   │       └── hhplus
+│   │           └── be
+│   │               └── server
+│   │                   ├── ServerApplication.java
+│   │                   ├── admin
+│   │                   │   └── domain
+│   │                   │       └── view
+│   │                   │           └── usecase
+│   │                   ├── api
+│   │                   │   └── domain
+│   │                   │       ├── controller
+│   │                   │       │   └── GoodsController.java
+│   │                   │       ├── dto
+│   │                   │       │   ├── request
+│   │                   │       │   └── response
+│   │                   │       └── usecase
+│   │                   ├── common
+│   │                   │   ├── AssetStateCd.java
+│   │                   │   ├── AssetTypeCd.java
+│   │                   │   ├── BaseEntity.java
+│   │                   │   ├── GoodsStateCd.java
+│   │                   │   ├── OrderStateCd.java
+│   │                   │   └── PayStateCd.java
+│   │                   ├── config
+│   │                   │   └── jpa
+│   │                   │       └── JpaConfig.java
+│   │                   └── domain
+│   │                       ├── coupon
+│   │                       │   └── models
+│   │                       │       └── Coupon.java
+│   │                       ├── goods
+│   │                       │   └── models
+│   │                       │       ├── Goods.java
+│   │                       │       └── SummaryGoods.java
+│   │                       ├── member
+│   │                       │   └── models
+│   │                       │       ├── Member.java
+│   │                       │       └── MemberAsset.java
+│   │                       ├── order
+│   │                       │   └── models
+│   │                       │       └── Order.java
+│   │                       └── pay
+│   │                           └── models
+│   │                               └── PayInfo.java
+│   └── resources
+│       └── application.yml
+└── test
+    └── java
+        └── kr
+            └── hhplus
+                └── be
+                    └── server
+                        ├── ServerApplicationTests.java
+                        └── TestcontainersConfiguration.java
 
-### Prerequisites
-
-#### Running Docker Containers
-
-`local` profile 로 실행하기 위하여 인프라가 설정되어 있는 Docker 컨테이너를 실행해주셔야 합니다.
-
-```bash
-docker-compose up -d
 ```
