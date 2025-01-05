@@ -2,8 +2,8 @@ package kr.hhplus.be.server.domain.pay.models;
 
 
 import jakarta.persistence.*;
-import kr.hhplus.be.server.common.AssetTypeCd;
 import kr.hhplus.be.server.common.PayStateCd;
+import kr.hhplus.be.server.common.PayTypeCd;
 import lombok.Getter;
 
 @Getter
@@ -19,13 +19,13 @@ public class PayInfo {
     @Column(name = "ord_no")
     private long ordNo;
 
-    @Column(name = "asset_type_cd")
-    private AssetTypeCd assetTypeCd;
+    @Column(name = "pay_type_cd")
+    private PayTypeCd payTypeCd;
 
     @Column(name = "pay_amount")
     private long payAmount;
 
-    @Column(name = "pay_stat_cd")
+    @Column(name = "pay_state_cd")
     private PayStateCd payStateCd;
 
 }

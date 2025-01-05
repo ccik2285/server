@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.common;
 
-public enum AssetStateCd {
+public enum CouponStateCd {
     AVAILABLE,
     DEPLETED
-
 }

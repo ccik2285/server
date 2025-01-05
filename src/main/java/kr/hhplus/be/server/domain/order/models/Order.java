@@ -16,10 +16,4 @@ public class Order {
     @Column(name = "mbr_no")
     private long mbrNo;
 
-    @Column(name = "goods_no")
-    private long goods_no;
-
-    private long quauntity;
-
-
 }

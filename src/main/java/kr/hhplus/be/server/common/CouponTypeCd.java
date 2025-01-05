@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.common;
 
-public enum AssetTypeCd {
-    POINT,
+public enum CouponTypeCd {
     PERCENT_COUPON,
     IMMEDIATE_COUPON
 }

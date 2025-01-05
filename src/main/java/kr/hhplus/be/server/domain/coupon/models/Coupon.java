@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.domain.coupon.models;
 
 import jakarta.persistence.*;
-import kr.hhplus.be.server.common.AssetTypeCd;
 import kr.hhplus.be.server.common.BaseEntity;
+import kr.hhplus.be.server.common.CouponTypeCd;
 import lombok.Getter;
 
 @Getter
@@ -16,8 +16,8 @@ public class Coupon extends BaseEntity {
     private long coupon_no;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "asset_type_cd")
-    private AssetTypeCd assetTypeCd;
+    @Column(name = "coupon_type_cd")
+    private CouponTypeCd couponTypeCd;
     @Column(name = "percent_discount")
     private Long percentDiscount;
     @Column(name = "immediate_discount")
