@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.domain.goods.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.hhplus.be.server.domain.goods.dto.response.GoodsPageResponse;
 import kr.hhplus.be.server.domain.goods.models.Goods;
 import kr.hhplus.be.server.domain.goods.service.SearchGoodsService;
 import org.springframework.data.domain.Page;
@@ -20,10 +21,10 @@ public class GoodsController {
     /*----------viewStart------------*/
 
     @GetMapping
-    public ResponseEntity<Page<Goods>> getGoodsList(
+    public ResponseEntity<Page<GoodsPageResponse>> getGoodsList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<Goods> goodsList = searchGoodsService.getGoodsList(page, size);
+        Page<GoodsPageResponse> goodsList = searchGoodsService.getGoodsList(page, size);
         return ResponseEntity.ok(goodsList);
     }
 
@@ -34,11 +35,11 @@ public class GoodsController {
     }
 
     @GetMapping("/searchGoods/{goodsNm}")
-    public ResponseEntity<Page<Goods>> searchGoodsByName(
+    public ResponseEntity<Page<GoodsPageResponse>> searchGoodsByName(
             @PathVariable String goodsNm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<Goods> searchResults = searchGoodsService.searchGoodsByName(goodsNm, page, size);
+        Page<GoodsPageResponse> searchResults = searchGoodsService.searchGoodsByName(goodsNm, page, size);
         return ResponseEntity.ok(searchResults);
     }
 
