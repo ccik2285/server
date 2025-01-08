@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.member.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import kr.hhplus.be.server.common.BaseEntity;
 import kr.hhplus.be.server.common.CouponStateCd;
@@ -14,6 +15,7 @@ import lombok.Getter;
 @Table(name = "member_coupon")
 public class MemberCoupon extends BaseEntity {
 
+    @Id
     @Column(name = "mbr_no")
     private long mbrNo;
     @Column(name = "coupon_type_cd")
