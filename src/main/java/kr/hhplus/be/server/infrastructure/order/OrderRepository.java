@@ -20,7 +20,6 @@ public class OrderRepository implements OrderRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QOrder order = QOrder.order;
     private final QOrderDtl orderDtl = QOrderDtl.orderDtl;
-    private final QGoods goods = QGoods.goods;
 
     public OrderRepository(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
