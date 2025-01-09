@@ -24,11 +24,14 @@ public class PayService {
 
     @Transactional
     public void processPayments(Long mbrNo,Long ordDtlNo, List<PayDetailRequest> pay) {
+        Long totalAmt = 0L;
         for (PayDetailRequest payInfo : pay) {
             payRepositoryCustom.payOrder(ordDtlNo, payInfo.getPayTypeCd(),
                     payInfo.getPayAmount(), payInfo.getPayStateCd());
-            memberPointService.useBalance(mbrNo,payInfo.getPayAmount());
+            totalAmt += payInfo.getPayAmount();
         }
+
+        memberPointService.useBalance(mbrNo,totalAmt);
         boolean isUpdated = orderRepositoryCustom.updateOrderStatus(ordDtlNo, OrderStateCd.COMPLETED);
 
         if (!isUpdated) {
