@@ -1,33 +1,20 @@
 package kr.hhplus.be.server.domain.order.service;
 
-import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.order.dto.request.OrderDetailRequest;
-import kr.hhplus.be.server.domain.order.repository.OrderRepositoryCustom;
+import kr.hhplus.be.server.domain.order.usecase.OrderUseCase;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class OrderService {
 
-    private final OrderRepositoryCustom orderRepositoryCustom;
+    private final OrderUseCase orderUseCase;
 
-    public OrderService(OrderRepositoryCustom orderRepositoryCustom) {
-        this.orderRepositoryCustom = orderRepositoryCustom;
+    public OrderService(OrderUseCase orderUseCase) {
+        this.orderUseCase = orderUseCase;
     }
 
-    @Transactional
     public Long createOrder(Long mbrNo, List<OrderDetailRequest> orderDetails) {
-        Long ordNo = orderRepositoryCustom.createOrder(mbrNo, LocalDateTime.now());
-
-        for (OrderDetailRequest detail : orderDetails) {
-            boolean success = orderRepositoryCustom.decreaseStock(detail.getGoodsNo(), detail.getOrderQuantity());
-            if (!success) {
-                throw new IllegalStateException("재고 부족: goods_no = " + detail.getGoodsNo());
-            }
-            orderRepositoryCustom.createOrderDetail(ordNo, detail);
-        }
-        return ordNo;
+        return orderUseCase.createOrder(mbrNo, orderDetails);
     }
 }

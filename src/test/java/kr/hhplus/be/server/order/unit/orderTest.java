@@ -3,7 +3,7 @@ package kr.hhplus.be.server.order.unit;
 
 import kr.hhplus.be.server.domain.order.dto.request.OrderDetailRequest;
 import kr.hhplus.be.server.domain.order.repository.OrderRepositoryCustom;
-import kr.hhplus.be.server.domain.order.service.OrderService;
+import kr.hhplus.be.server.domain.order.usecase.OrderUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ public class orderTest {
     @Mock
     private OrderRepositoryCustom orderRepositoryCustom;
     @InjectMocks
-    private OrderService orderService;
+    private OrderUseCase orderUseCase;
 
     @Test
     void 주문생성성공테스트() {
@@ -42,7 +42,7 @@ public class orderTest {
         when(orderRepositoryCustom.createOrderDetail(anyLong(), any(OrderDetailRequest.class))).thenReturn(1L);
 
 
-        Long result = orderService.createOrder(mbrNo, Arrays.asList(orderDetail));
+        Long result = orderUseCase.createOrder(mbrNo, Arrays.asList(orderDetail));
 
         assertNotNull(result);
         assertEquals(orderNo, result);
@@ -68,7 +68,7 @@ public class orderTest {
 
         // when & then
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            orderService.createOrder(mbrNo, Arrays.asList(orderDetail));
+            orderUseCase.createOrder(mbrNo, Arrays.asList(orderDetail));
         });
         assertEquals("재고 부족: goods_no = 1", thrown.getMessage());
     }
