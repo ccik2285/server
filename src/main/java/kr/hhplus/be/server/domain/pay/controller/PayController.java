@@ -1,6 +1,9 @@
 package kr.hhplus.be.server.domain.pay.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.hhplus.be.server.domain.pay.dto.request.PayRequest;
 import kr.hhplus.be.server.domain.pay.service.PayService;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,11 @@ public class PayController {
     }
 
     @PostMapping("/process")
+    @Operation(summary = "결제 생성", description = "결제 생성")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "결제 생성 성공"),
+            @ApiResponse(responseCode = "400", description = "결제 생성 실패")
+    })
     public ResponseEntity<String> processPayments(
             @RequestBody PayRequest paymentRequest) {
         try {
