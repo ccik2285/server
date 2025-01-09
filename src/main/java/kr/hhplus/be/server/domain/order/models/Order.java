@@ -17,6 +17,8 @@ public class Order extends BaseEntity {
 
     @Column(name = "mbr_no")
     private long mbrNo;
+    @Column(name = "total_amt")
+    private long totalAmt;
 
     @Builder
     public Order(Long mbrNo) {

@@ -55,8 +55,13 @@ public class OrderRepository implements OrderRepositoryCustom {
     }
 
     @Override
-    public void updateOrder() {
+    public boolean updateOrderStatus(Long orderDtlNo, OrderStateCd orderStateCd) {
+        long updatedRows = jpaQueryFactory.update(orderDtl)
+                .set(orderDtl.orderStateCd, orderStateCd)
+                .where(orderDtl.orderDtlNo.eq(orderDtlNo))
+                .execute();
 
+        return updatedRows > 0;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class OrderRepository implements OrderRepositoryCustom {
                 .fetchOne();
 
         if (goods == null || goods.getStockQuantity() < quantity) {
-            return false; // 재고 부족
+            return false;
         }
 
         long affectedRows = jpaQueryFactory.update(QGoods.goods)
@@ -76,6 +81,6 @@ public class OrderRepository implements OrderRepositoryCustom {
                 .where(QGoods.goods.stockQuantity.goe(quantity))
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .execute();
-        return affectedRows > 0; // 감소 성공
+        return affectedRows > 0;
     }
 }
