@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-    private final MemberService memberService;
     private final MemberPointService memberPointService;
     private final CouponService couponService;
 
-    public MemberController(MemberService memberService, MemberPointService memberPointService, CouponService couponService) {
-        this.memberService = memberService;
+    public MemberController(MemberPointService memberPointService, CouponService couponService) {
         this.memberPointService = memberPointService;
         this.couponService = couponService;
     }
