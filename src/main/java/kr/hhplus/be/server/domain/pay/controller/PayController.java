@@ -24,7 +24,7 @@ public class PayController {
     public ResponseEntity<String> processPayments(
             @RequestBody PayRequest paymentRequest) {
         try {
-            payService.processPayments(paymentRequest.getOrdNo(), paymentRequest.getPayDetailRequests());
+            payService.processPayments(paymentRequest.getMbrNo(),paymentRequest.getOrdNo(), paymentRequest.getPayDetailRequests());
             return ResponseEntity.ok("결제 처리 완료");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

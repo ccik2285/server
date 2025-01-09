@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class PayRequest {
+    private Long mbrNo;
     private Long ordNo;
     private List<PayDetailRequest> payDetailRequests;
 }
