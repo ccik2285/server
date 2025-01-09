@@ -17,5 +17,5 @@ public class MemberPoint extends BaseEntity {
     @Column(name = "mbr_no")
     private long mbrNo;
     @Column(name = "available_point")
-    private long AvailablePoint;
+    private long availablePoint;
 }
