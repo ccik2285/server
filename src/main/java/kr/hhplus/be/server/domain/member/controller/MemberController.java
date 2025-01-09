@@ -4,8 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.hhplus.be.server.domain.coupon.service.CouponService;
+import kr.hhplus.be.server.domain.coupon.usecase.IssueCouponUseCase;
 import kr.hhplus.be.server.domain.member.service.MemberPointService;
 import kr.hhplus.be.server.domain.member.service.MemberService;
+import kr.hhplus.be.server.domain.member.usecase.ChargeBalanceUseCase;
+import kr.hhplus.be.server.domain.member.usecase.GetBalanceUseCase;
+import kr.hhplus.be.server.domain.member.usecase.UseBalanceUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +17,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-    private final MemberPointService memberPointService;
-    private final CouponService couponService;
 
-    public MemberController(MemberPointService memberPointService, CouponService couponService) {
-        this.memberPointService = memberPointService;
-        this.couponService = couponService;
+    private final ChargeBalanceUseCase chargeBalanceUseCase;
+    private final GetBalanceUseCase getBalanceUseCase;
+    private final IssueCouponUseCase issueCouponUseCase;
+
+    public MemberController(ChargeBalanceUseCase chargeBalanceUseCase, GetBalanceUseCase getBalanceUseCase, IssueCouponUseCase issueCouponUseCase) {
+        this.chargeBalanceUseCase = chargeBalanceUseCase;
+        this.getBalanceUseCase = getBalanceUseCase;
+        this.issueCouponUseCase = issueCouponUseCase;
     }
+
 
     @GetMapping("/{mbrNo}/balance")
     @Operation(summary = "포인트 조회", description = "포인트 조회")
@@ -28,7 +36,8 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "포인트 조회 실패")
     })
     public ResponseEntity<Long> getBalance(@PathVariable Long mbrNo) {
-        Long balance = memberPointService.getBalance(mbrNo);
+        Long balance = getBalanceUseCase.execute(mbrNo);
+        System.out.println("hello every: " + balance);
         return ResponseEntity.ok(balance);
     }
 
@@ -39,7 +48,7 @@ public class MemberController {
             @ApiResponse(responseCode = "400", description = "포인트 충전 실패")
     })
     public ResponseEntity<String> rechargeBalance(@PathVariable Long mbrNo, @RequestBody Long amount) {
-        memberPointService.chargeBalance(mbrNo, amount);
+        chargeBalanceUseCase.execute(mbrNo, amount);
         return ResponseEntity.ok("충전 완료");
     }
 
@@ -52,7 +61,7 @@ public class MemberController {
     public ResponseEntity<String> issueCoupon(
             @PathVariable Long mbrNo,
             @RequestParam Long couponNo) {
-        boolean success = couponService.issueCoupon(mbrNo, couponNo);
+        boolean success = issueCouponUseCase.execute(mbrNo, couponNo);
         if (success) {
             return ResponseEntity.ok("쿠폰 발급 성공");
         } else {
