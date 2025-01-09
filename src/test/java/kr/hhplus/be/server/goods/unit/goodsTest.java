@@ -5,7 +5,11 @@ import kr.hhplus.be.server.common.GoodsStateCd;
 import kr.hhplus.be.server.domain.goods.dto.response.GoodsPageResponse;
 import kr.hhplus.be.server.domain.goods.models.Goods;
 import kr.hhplus.be.server.domain.goods.repository.GoodsRepositoryCustom;
+import kr.hhplus.be.server.domain.goods.service.GoodsService;
 import kr.hhplus.be.server.domain.goods.service.SearchGoodsService;
+import kr.hhplus.be.server.domain.goods.usecase.GetGoodsDetailUseCase;
+import kr.hhplus.be.server.domain.goods.usecase.GetGoodsListUseCase;
+import kr.hhplus.be.server.domain.goods.usecase.SearchGoodsByNameUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +32,13 @@ public class goodsTest {
     private GoodsRepositoryCustom goodsRepositoryCustom;
 
     @InjectMocks
-    private SearchGoodsService searchGoodsService;
+    private GetGoodsListUseCase getGoodsListUseCase;
+
+    @InjectMocks
+    private GetGoodsDetailUseCase getGoodsDetailUseCase;
+
+    @InjectMocks
+    private SearchGoodsByNameUseCase searchGoodsByNameUseCase;
 
     @Test
     public void 상품리스트조회() {
@@ -41,7 +51,7 @@ public class goodsTest {
 
         when(goodsRepositoryCustom.findGoodsList(pageable)).thenReturn(goodsPage);
 
-        Page<GoodsPageResponse> result = searchGoodsService.getGoodsList(0, 10);
+        Page<GoodsPageResponse> result = getGoodsListUseCase.execute(0, 10);
 
         assertNotNull(result);
         assertEquals(2, result.getContent().size());
@@ -61,7 +71,7 @@ public class goodsTest {
 
         when(goodsRepositoryCustom.searchGoodsByName(goodsNm, pageable)).thenReturn(goodsPage);
 
-        Page<GoodsPageResponse> result = searchGoodsService.searchGoodsByName(goodsNm, 0, 10);
+        Page<GoodsPageResponse> result = searchGoodsByNameUseCase.execute(goodsNm, 0, 10);
 
         assertNotNull(result);
         assertEquals(2, result.getContent().size());
@@ -76,7 +86,7 @@ public class goodsTest {
 
         when(goodsRepositoryCustom.findGoodsDetail(goodsNo)).thenReturn(goods);
 
-        Goods result = searchGoodsService.getGoodsDetail(goodsNo);
+        Goods result = getGoodsDetailUseCase.execute(goodsNo);
 
         assertNotNull(result);
         assertEquals("Product A", result.getGoodsNm());

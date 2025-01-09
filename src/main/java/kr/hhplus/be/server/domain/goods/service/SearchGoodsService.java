@@ -3,6 +3,9 @@ package kr.hhplus.be.server.domain.goods.service;
 import kr.hhplus.be.server.domain.goods.dto.response.GoodsPageResponse;
 import kr.hhplus.be.server.domain.goods.models.Goods;
 import kr.hhplus.be.server.domain.goods.repository.GoodsRepositoryCustom;
+import kr.hhplus.be.server.domain.goods.usecase.GetGoodsDetailUseCase;
+import kr.hhplus.be.server.domain.goods.usecase.GetGoodsListUseCase;
+import kr.hhplus.be.server.domain.goods.usecase.SearchGoodsByNameUseCase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,32 +17,28 @@ import java.util.stream.Collectors;
 @Service
 public class SearchGoodsService {
 
-    private final GoodsRepositoryCustom goodsRepositoryCustom;
+    private final GetGoodsListUseCase getGoodsListUseCase;
+    private final GetGoodsDetailUseCase getGoodsDetailUseCase;
+    private final SearchGoodsByNameUseCase searchGoodsByNameUseCase;
 
-    public SearchGoodsService(GoodsRepositoryCustom goodsRepositoryCustom) {
-        this.goodsRepositoryCustom = goodsRepositoryCustom;
+    public SearchGoodsService(GetGoodsListUseCase getGoodsListUseCase,
+                              GetGoodsDetailUseCase getGoodsDetailUseCase,
+                              SearchGoodsByNameUseCase searchGoodsByNameUseCase) {
+        this.getGoodsListUseCase = getGoodsListUseCase;
+        this.getGoodsDetailUseCase = getGoodsDetailUseCase;
+        this.searchGoodsByNameUseCase = searchGoodsByNameUseCase;
     }
 
-    public Page<GoodsPageResponse> getGoodsList(int page, int size){
-        return convertToDtoPage(goodsRepositoryCustom.findGoodsList(PageRequest.of(page, size)));
+    public Page<GoodsPageResponse> getGoodsList(int page, int size) {
+        return getGoodsListUseCase.execute(page, size);
     }
 
     public Goods getGoodsDetail(Long goodsNo) {
-        return goodsRepositoryCustom.findGoodsDetail(goodsNo);
+        return getGoodsDetailUseCase.execute(goodsNo);
     }
+
     public Page<GoodsPageResponse> searchGoodsByName(String goodsNm, int page, int size) {
-        return convertToDtoPage(goodsRepositoryCustom.searchGoodsByName(goodsNm, PageRequest.of(page, size)));
-    }
-
-    private Page<GoodsPageResponse> convertToDtoPage(Page<Goods> goodsPage) {
-        List<GoodsPageResponse> goodsDtoList = goodsPage.getContent().stream()
-                .map(goods -> new GoodsPageResponse(
-                        goods.getGoodsNo(),
-                        goods.getGoodsNm(),
-                        goods.getSalePrice()))
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(goodsDtoList, goodsPage.getPageable(), goodsPage.getTotalElements());
+        return searchGoodsByNameUseCase.execute(goodsNm, page, size);
     }
 
 }
