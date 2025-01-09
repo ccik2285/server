@@ -17,6 +17,7 @@ import java.util.Optional;
 public class GoodsRepository implements GoodsRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final QGoods goods = QGoods.goods;
 
     public GoodsRepository(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
@@ -24,7 +25,6 @@ public class GoodsRepository implements GoodsRepositoryCustom {
 
     @Override
     public Page<Goods> findGoodsList(Pageable pageable) {
-        QGoods goods = QGoods.goods;
 
         List<Goods> content = jpaQueryFactory
                 .selectFrom(goods)
@@ -46,7 +46,6 @@ public class GoodsRepository implements GoodsRepositoryCustom {
 
     @Override
     public Goods findGoodsDetail(Long goodsNo) {
-        QGoods goods = QGoods.goods;
 
         return jpaQueryFactory
                 .selectFrom(goods)
@@ -56,7 +55,6 @@ public class GoodsRepository implements GoodsRepositoryCustom {
 
     @Override
     public Page<Goods> searchGoodsByName(String goodsNm, Pageable pageable) {
-        QGoods goods = QGoods.goods;
 
         List<Goods> content = jpaQueryFactory
                 .selectFrom(goods)

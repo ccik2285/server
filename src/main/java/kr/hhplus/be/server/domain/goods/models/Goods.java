@@ -12,7 +12,6 @@ import lombok.Getter;
 public class Goods extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "goods_no")
     private long goodsNo;
 
