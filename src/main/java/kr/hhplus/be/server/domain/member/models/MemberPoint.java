@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import kr.hhplus.be.server.common.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -18,4 +19,10 @@ public class MemberPoint extends BaseEntity {
     private long mbrNo;
     @Column(name = "available_point")
     private long availablePoint;
+
+    @Builder
+    public MemberPoint(Long mbrNo,Long availablePoint){
+        this.mbrNo = mbrNo;
+        this.availablePoint = availablePoint;
+    }
 }

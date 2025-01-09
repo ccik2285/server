@@ -6,12 +6,19 @@ import kr.hhplus.be.server.domain.coupon.models.Coupon;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
 import kr.hhplus.be.server.domain.member.models.MemberCoupon;
 import kr.hhplus.be.server.domain.member.repository.MemberCouponRepositoryCustom;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class CouponService {
+
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CouponRepository couponRepository;
     private final MemberCouponRepositoryCustom memberCouponRepositoryCustom;
@@ -31,6 +38,7 @@ public class CouponService {
         }
 
         Coupon coupon = optionalCoupon.get();
+        logger.info("hello : " + coupon.getStockQuantity());
         if (coupon.getStockQuantity() <= 0) {
             return false;
         }

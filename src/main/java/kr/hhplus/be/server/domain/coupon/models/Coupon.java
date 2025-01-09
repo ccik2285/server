@@ -3,11 +3,13 @@ package kr.hhplus.be.server.domain.coupon.models;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.BaseEntity;
 import kr.hhplus.be.server.common.CouponTypeCd;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Entity
 @Table(name = "coupon")
+@Builder
 public class Coupon extends BaseEntity {
 
     @Id

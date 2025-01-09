@@ -23,8 +23,6 @@ public class GoodsController {
         this.goodsService = goodsService;
     }
 
-    /*----------viewStart------------*/
-
     @GetMapping
     public ResponseEntity<Page<GoodsPageResponse>> getGoodsList(
             @RequestParam(defaultValue = "0") int page,
@@ -52,13 +50,5 @@ public class GoodsController {
     public ResponseEntity<List<Goods>> findTopSellingGoods(){
         return ResponseEntity.ok(goodsService.findTopSellingGoods());
     }
-    /*----------viewEnd------------*/
 
-
-    /*----------businessStart------------*/
-
-
-
-
-    /*----------businessEnd------------*/
 }
