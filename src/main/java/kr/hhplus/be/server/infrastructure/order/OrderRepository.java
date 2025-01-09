@@ -3,6 +3,7 @@ package kr.hhplus.be.server.infrastructure.order;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.common.OrderStateCd;
 import kr.hhplus.be.server.domain.goods.models.Goods;
 import kr.hhplus.be.server.domain.goods.models.QGoods;
 import kr.hhplus.be.server.domain.order.dto.request.OrderDetailRequest;
@@ -48,8 +49,8 @@ public class OrderRepository implements OrderRepositoryCustom {
     @Transactional
     public Long createOrderDetail(Long ordNo, OrderDetailRequest orderData) {
         return jpaQueryFactory.insert(orderDtl)
-                .columns(orderDtl.orderNo, orderDtl.goodsNo, orderDtl.orderQuantity, orderDtl.createdAt, orderDtl.updatedAt)
-                .values(ordNo, orderData.getGoodsNo(), orderData.getOrderQuantity(), LocalDateTime.now(), LocalDateTime.now())
+                .columns(orderDtl.orderNo, orderDtl.goodsNo, orderDtl.orderQuantity, orderDtl.orderStateCd,orderDtl.createdAt, orderDtl.updatedAt)
+                .values(ordNo, orderData.getGoodsNo(), orderData.getOrderQuantity(), OrderStateCd.ON_PROGRESS,LocalDateTime.now(), LocalDateTime.now())
                 .execute();
     }
 
