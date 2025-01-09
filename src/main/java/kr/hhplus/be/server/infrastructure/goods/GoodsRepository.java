@@ -1,13 +1,17 @@
 package kr.hhplus.be.server.infrastructure.goods;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.hhplus.be.server.common.OrderStateCd;
 import kr.hhplus.be.server.domain.goods.models.Goods;
 import kr.hhplus.be.server.domain.goods.models.QGoods;
 import kr.hhplus.be.server.domain.goods.repository.GoodsRepositoryCustom;
+import kr.hhplus.be.server.domain.order.models.OrderDtl;
+import kr.hhplus.be.server.domain.order.models.QOrderDtl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +22,7 @@ public class GoodsRepository implements GoodsRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QGoods goods = QGoods.goods;
+    private final QOrderDtl orderDtl = QOrderDtl.orderDtl;
 
     public GoodsRepository(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
@@ -72,5 +77,18 @@ public class GoodsRepository implements GoodsRepositoryCustom {
 
 
         return new PageImpl<>(content, pageable, count);
+    }
+
+    @Override
+    public List<Goods> findTopSellingGoods() {
+        return jpaQueryFactory
+                .select(goods)
+                .from(orderDtl)
+                .join(goods).on(orderDtl.goodsNo.eq(goods.goodsNo))
+                .where(orderDtl.orderStateCd.eq(OrderStateCd.COMPLETED))
+                .groupBy(goods.goodsNo)
+                .orderBy(orderDtl.orderQuantity.sum().desc())
+                .limit(3)
+                .fetch();
     }
 }

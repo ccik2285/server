@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface GoodsRepositoryCustom {
     Page<Goods> findGoodsList(Pageable pageable);
     Goods findGoodsDetail(Long goodsNo);
     Page<Goods> searchGoodsByName(String goodsNm, Pageable pageable);
-
+    List<Goods> findTopSellingGoods();
 }

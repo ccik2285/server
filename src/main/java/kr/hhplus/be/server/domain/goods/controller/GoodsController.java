@@ -3,19 +3,24 @@ package kr.hhplus.be.server.domain.goods.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.hhplus.be.server.domain.goods.dto.response.GoodsPageResponse;
 import kr.hhplus.be.server.domain.goods.models.Goods;
+import kr.hhplus.be.server.domain.goods.service.GoodsService;
 import kr.hhplus.be.server.domain.goods.service.SearchGoodsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/goods")
 public class GoodsController {
 
     private final SearchGoodsService searchGoodsService;
+    private final GoodsService goodsService;
 
-    public GoodsController(SearchGoodsService searchGoodsService) {
+    public GoodsController(SearchGoodsService searchGoodsService, GoodsService goodsService) {
         this.searchGoodsService = searchGoodsService;
+        this.goodsService = goodsService;
     }
 
     /*----------viewStart------------*/
@@ -43,7 +48,10 @@ public class GoodsController {
         return ResponseEntity.ok(searchResults);
     }
 
-
+    @GetMapping("/findTopSellingGoods")
+    public ResponseEntity<List<Goods>> findTopSellingGoods(){
+        return ResponseEntity.ok(goodsService.findTopSellingGoods());
+    }
     /*----------viewEnd------------*/
 
 
