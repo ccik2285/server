@@ -27,7 +27,7 @@ public class orderTest {
     private OrderService orderService;
 
     @Test
-    void testCreateOrder_Success() {
+    void 주문생성성공테스트() {
 
         Long mbrNo = 1L;
         OrderDetailRequest orderDetail = new OrderDetailRequest();
@@ -54,7 +54,7 @@ public class orderTest {
     }
 
     @Test
-    void testCreateOrder_InsufficientStock() {
+    void 재고부족으로인한주문생성실패() {
         // given
         Long mbrNo = 1L;
         OrderDetailRequest orderDetail = new OrderDetailRequest();
