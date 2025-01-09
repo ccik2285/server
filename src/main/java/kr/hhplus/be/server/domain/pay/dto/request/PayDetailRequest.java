@@ -10,5 +10,4 @@ import lombok.Getter;
 public class PayDetailRequest {
     private PayTypeCd payTypeCd;
     private Long payAmount;
-    private PayStateCd payStateCd;
 }

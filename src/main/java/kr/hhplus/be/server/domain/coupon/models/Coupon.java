@@ -27,4 +27,10 @@ public class Coupon extends BaseEntity {
     @Column(name = "stock_quantity")
     private long stockQuantity;
 
+    public void decreaseStock() {
+        if (this.stockQuantity > 0) {
+            this.stockQuantity -= 1;
+        }
+    }
+
 }

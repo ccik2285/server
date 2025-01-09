@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.infrastructure.pay;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.common.PayStateCd;
 import kr.hhplus.be.server.common.PayTypeCd;
@@ -14,7 +13,7 @@ public class PayRepository implements PayRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final QPayInfo payInfo = QPayInfo.payInfo;
 
-    public PayRepository(JPAQueryFactory queryFactory, EntityManager entityManager) {
+    public PayRepository(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 

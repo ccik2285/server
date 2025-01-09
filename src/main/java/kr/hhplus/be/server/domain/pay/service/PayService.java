@@ -2,6 +2,7 @@ package kr.hhplus.be.server.domain.pay.service;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.common.OrderStateCd;
+import kr.hhplus.be.server.common.PayStateCd;
 import kr.hhplus.be.server.domain.member.service.MemberPointService;
 import kr.hhplus.be.server.domain.order.repository.OrderRepositoryCustom;
 import kr.hhplus.be.server.domain.pay.dto.request.PayDetailRequest;
@@ -27,7 +28,7 @@ public class PayService {
         Long totalAmt = 0L;
         for (PayDetailRequest payInfo : pay) {
             payRepositoryCustom.payOrder(ordDtlNo, payInfo.getPayTypeCd(),
-                    payInfo.getPayAmount(), payInfo.getPayStateCd());
+                    payInfo.getPayAmount(), PayStateCd.PAYED);
             totalAmt += payInfo.getPayAmount();
         }
 
