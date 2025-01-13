@@ -8,6 +8,7 @@ import kr.hhplus.be.server.domain.order.repository.OrderRepositoryCustom;
 import kr.hhplus.be.server.domain.pay.dto.request.PayDetailRequest;
 import kr.hhplus.be.server.domain.pay.repository.PayRepositoryCustom;
 import kr.hhplus.be.server.domain.pay.service.PayService;
+import kr.hhplus.be.server.domain.pay.usecase.PayUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.*;
 class PayServiceTest {
 
     @InjectMocks
-    private PayService payService;
+    private PayUseCase payUseCase;
 
     @Mock
     private PayRepositoryCustom payRepositoryCustom;
@@ -51,7 +52,7 @@ class PayServiceTest {
         when(payRepositoryCustom.payOrder(eq(ordDtlNo), eq(PayTypeCd.POINT), eq(2000L), eq(PayStateCd.PAYED))).thenReturn(true);
         when(orderRepositoryCustom.updateOrderStatus(eq(ordDtlNo), eq(OrderStateCd.COMPLETED))).thenReturn(true);
 
-        payService.processPayments(mbrNo, ordDtlNo, payDetails);
+        payUseCase.execute(mbrNo, ordDtlNo, payDetails);
 
         verify(payRepositoryCustom, times(1)).payOrder(eq(ordDtlNo), eq(PayTypeCd.POINT), eq(1000L), eq(PayStateCd.PAYED));
         verify(payRepositoryCustom, times(1)).payOrder(eq(ordDtlNo), eq(PayTypeCd.POINT), eq(2000L), eq(PayStateCd.PAYED));
@@ -73,7 +74,7 @@ class PayServiceTest {
 
 
         try {
-            payService.processPayments(mbrNo, ordDtlNo, payDetails);
+            payUseCase.execute(mbrNo, ordDtlNo, payDetails);
         } catch (RuntimeException e) {
             assertEquals("주문 상태 업데이트에 실패했습니다.", e.getMessage());
         }

@@ -4,6 +4,7 @@ import kr.hhplus.be.server.common.CouponTypeCd;
 import kr.hhplus.be.server.domain.coupon.models.Coupon;
 import kr.hhplus.be.server.domain.coupon.repository.CouponRepository;
 import kr.hhplus.be.server.domain.coupon.service.CouponService;
+import kr.hhplus.be.server.domain.coupon.usecase.IssueCouponUseCase;
 import kr.hhplus.be.server.domain.member.repository.MemberCouponRepositoryCustom;
 import kr.hhplus.be.server.domain.member.models.MemberCoupon;
 import kr.hhplus.be.server.common.CouponStateCd;
@@ -29,7 +30,7 @@ public class CouponServiceTest {
     private MemberCouponRepositoryCustom memberCouponRepositoryCustom;
 
     @InjectMocks
-    private CouponService couponService;
+    private IssueCouponUseCase issueCouponUseCase;
 
     @Test
     public void 쿠폰발급선착순_동시성테스트() throws InterruptedException {
@@ -61,7 +62,7 @@ public class CouponServiceTest {
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
-        Runnable task = () -> couponService.issueCoupon(mbrNo, couponNo);
+        Runnable task = () -> issueCouponUseCase.execute(mbrNo, couponNo);
 
         executorService.submit(task);
         executorService.submit(task);
@@ -108,7 +109,7 @@ public class CouponServiceTest {
                 .thenReturn(memberCoupon);
 
 
-        boolean result = couponService.issueCoupon(mbrNo, couponNo);
+        boolean result = issueCouponUseCase.execute(mbrNo, couponNo);
 
 
         assertTrue(result);

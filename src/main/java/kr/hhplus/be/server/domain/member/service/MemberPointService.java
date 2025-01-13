@@ -1,36 +1,32 @@
 package kr.hhplus.be.server.domain.member.service;
 
-import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.domain.member.repository.MemberPointRepositoryCustom;
+import kr.hhplus.be.server.domain.member.usecase.GetBalanceUseCase;
+import kr.hhplus.be.server.domain.member.usecase.ChargeBalanceUseCase;
+import kr.hhplus.be.server.domain.member.usecase.UseBalanceUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberPointService {
-    private final MemberPointRepositoryCustom memberPointRepositoryCustom;
 
-    public MemberPointService(MemberPointRepositoryCustom memberPointRepositoryCustom) {
-        this.memberPointRepositoryCustom = memberPointRepositoryCustom;
+    private final GetBalanceUseCase getBalanceUseCase;
+    private final ChargeBalanceUseCase chargeBalanceUseCase;
+    private final UseBalanceUseCase useBalanceUseCase;
+
+    public MemberPointService(GetBalanceUseCase getBalanceUseCase, ChargeBalanceUseCase chargeBalanceUseCase, UseBalanceUseCase useBalanceUseCase) {
+        this.getBalanceUseCase = getBalanceUseCase;
+        this.chargeBalanceUseCase = chargeBalanceUseCase;
+        this.useBalanceUseCase = useBalanceUseCase;
     }
 
     public Long getBalance(Long mbrNo) {
-        return memberPointRepositoryCustom.getBalance(mbrNo);
+        return getBalanceUseCase.execute(mbrNo);
     }
 
-    @Transactional
     public void chargeBalance(Long mbrNo, Long amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("충전 금액은 0보다 커야 합니다.");
-        }
-        memberPointRepositoryCustom.chargeBalance(mbrNo, amount);
+        chargeBalanceUseCase.execute(mbrNo, amount);
     }
 
-    @Transactional
-    public void useBalance(Long mbrNo, Long amount){
-        Long currentBalance = getBalance(mbrNo);
-
-        if(amount > currentBalance){
-            throw new IllegalArgumentException("사용할 수 있는 포인트가 부족합니다.");
-        }
-        memberPointRepositoryCustom.useBalance(mbrNo, amount);
+    public void useBalance(Long mbrNo, Long amount) {
+        useBalanceUseCase.execute(mbrNo, amount);
     }
 }
