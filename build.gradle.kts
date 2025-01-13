@@ -1,3 +1,5 @@
+val querydslVersion = "5.0.0"
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.4.1"
@@ -30,16 +32,16 @@ dependencyManagement {
 }
 
 dependencies {
-    // Spring
+	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // DB
+	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
 
-    // Test
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
@@ -49,6 +51,15 @@ dependencies {
 	implementation("org.projectlombok:lombok:1.18.24")
 	compileOnly("org.projectlombok:lombok:1.18.24")
 	annotationProcessor("org.projectlombok:lombok:1.18.24")
+
+	//swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+	// QueryDSL
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {

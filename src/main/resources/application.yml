@@ -14,9 +14,9 @@ spring:
   jpa:
     open-in-view: false
     generate-ddl: false
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
@@ -29,3 +29,9 @@ spring:
     url: jdbc:mysql://localhost:3306/ecommerce?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 1234
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

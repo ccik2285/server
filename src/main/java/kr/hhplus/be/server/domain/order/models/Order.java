@@ -1,12 +1,14 @@
 package kr.hhplus.be.server.domain.order.models;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.common.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "`order`")
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +17,12 @@ public class Order {
 
     @Column(name = "mbr_no")
     private long mbrNo;
+    @Column(name = "total_amt")
+    private long totalAmt;
 
-    @Column(name = "goods_no")
-    private long goods_no;
-
-    private long quauntity;
-
+    @Builder
+    public Order(Long mbrNo) {
+        this.mbrNo = mbrNo;
+    }
 
 }
