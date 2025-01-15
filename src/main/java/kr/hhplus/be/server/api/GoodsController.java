@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.goods.controller;
+package kr.hhplus.be.server.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/goods")
 public class GoodsController {
-
     private final SearchGoodsService searchGoodsService;
     private final GoodsService goodsService;
 
@@ -72,5 +71,4 @@ public class GoodsController {
     public ResponseEntity<List<Goods>> findTopSellingGoods(){
         return ResponseEntity.ok(goodsService.findTopSellingGoods());
     }
-
 }
