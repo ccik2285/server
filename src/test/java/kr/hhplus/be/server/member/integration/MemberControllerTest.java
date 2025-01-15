@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.member.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.hhplus.be.server.api.MemberController;
 import kr.hhplus.be.server.domain.coupon.service.CouponService;
 import kr.hhplus.be.server.domain.coupon.usecase.IssueCouponUseCase;
-import kr.hhplus.be.server.domain.member.controller.MemberController;
 import kr.hhplus.be.server.domain.member.repository.MemberPointRepositoryCustom;
 import kr.hhplus.be.server.domain.member.service.MemberPointService;
 import kr.hhplus.be.server.domain.member.usecase.ChargeBalanceUseCase;

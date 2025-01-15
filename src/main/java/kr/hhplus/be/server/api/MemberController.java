@@ -1,23 +1,19 @@
-package kr.hhplus.be.server.domain.member.controller;
+package kr.hhplus.be.server.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import kr.hhplus.be.server.domain.coupon.service.CouponService;
 import kr.hhplus.be.server.domain.coupon.usecase.IssueCouponUseCase;
-import kr.hhplus.be.server.domain.member.service.MemberPointService;
-import kr.hhplus.be.server.domain.member.service.MemberService;
 import kr.hhplus.be.server.domain.member.usecase.ChargeBalanceUseCase;
 import kr.hhplus.be.server.domain.member.usecase.GetBalanceUseCase;
-import kr.hhplus.be.server.domain.member.usecase.UseBalanceUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-
     private final ChargeBalanceUseCase chargeBalanceUseCase;
     private final GetBalanceUseCase getBalanceUseCase;
     private final IssueCouponUseCase issueCouponUseCase;
@@ -68,5 +64,4 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("쿠폰 발급 실패: 재고 부족");
         }
     }
-
 }
