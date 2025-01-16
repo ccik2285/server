@@ -18,11 +18,16 @@ public class Order extends BaseEntity {
     @Column(name = "mbr_no")
     private long mbrNo;
     @Column(name = "total_amt")
-    private long totalAmt;
+    private Long totalAmt;
 
     @Builder
-    public Order(Long mbrNo) {
+    public Order(Long orderNo,Long mbrNo,Long totalAmt) {
+        this.orderNo = orderNo;
         this.mbrNo = mbrNo;
+        this.totalAmt = totalAmt;
     }
+    public Order() {
+    }
+
 
 }

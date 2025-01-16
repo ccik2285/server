@@ -2,6 +2,7 @@ package kr.hhplus.be.server.order.unit;
 
 
 import kr.hhplus.be.server.domain.order.dto.request.OrderDetailRequest;
+import kr.hhplus.be.server.domain.order.models.Order;
 import kr.hhplus.be.server.domain.order.repository.OrderRepositoryCustom;
 import kr.hhplus.be.server.domain.order.usecase.OrderUseCase;
 import org.junit.jupiter.api.Test;
@@ -30,17 +31,13 @@ public class orderTest {
     void 주문생성성공테스트() {
 
         Long mbrNo = 1L;
-        OrderDetailRequest orderDetail = new OrderDetailRequest();
-        orderDetail.setGoodsNo(1L);
-        orderDetail.setOrderQuantity(2L);
-        orderDetail.setPriceAmt(1000L);
+        OrderDetailRequest orderDetail = new OrderDetailRequest(1L,2L,1000L);
         Long orderNo = 123L;
 
 
-        when(orderRepositoryCustom.createOrder(anyLong(), any(LocalDateTime.class))).thenReturn(orderNo);
+        when(orderRepositoryCustom.getOrderNo(anyLong())).thenReturn(orderNo);
         when(orderRepositoryCustom.decreaseStock(anyLong(), anyLong())).thenReturn(true);
         when(orderRepositoryCustom.createOrderDetail(anyLong(), any(OrderDetailRequest.class))).thenReturn(1L);
-
 
         Long result = orderUseCase.createOrder(mbrNo, Arrays.asList(orderDetail));
 
@@ -48,7 +45,7 @@ public class orderTest {
         assertEquals(orderNo, result);
 
         // verify
-        verify(orderRepositoryCustom, times(1)).createOrder(anyLong(), any(LocalDateTime.class));
+        verify(orderRepositoryCustom, times(1)).createOrder(anyLong());
         verify(orderRepositoryCustom, times(1)).decreaseStock(anyLong(), anyLong());
         verify(orderRepositoryCustom, times(1)).createOrderDetail(eq(orderNo), eq(orderDetail));
     }
@@ -57,13 +54,10 @@ public class orderTest {
     void 재고부족으로인한주문생성실패() {
         // given
         Long mbrNo = 1L;
-        OrderDetailRequest orderDetail = new OrderDetailRequest();
-        orderDetail.setGoodsNo(1L);
-        orderDetail.setOrderQuantity(2L);
-        orderDetail.setPriceAmt(1000L);
+        OrderDetailRequest orderDetail = new OrderDetailRequest(1L,2L,1000L);
 
         // Mock 메서드
-        when(orderRepositoryCustom.createOrder(anyLong(), any(LocalDateTime.class))).thenReturn(123L);
+        when(orderRepositoryCustom.getOrderNo(anyLong())).thenReturn(123L);
         when(orderRepositoryCustom.decreaseStock(anyLong(), anyLong())).thenReturn(false);
 
         // when & then

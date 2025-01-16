@@ -18,8 +18,8 @@ public class OrderUseCase {
 
     @Transactional
     public Long createOrder(Long mbrNo, List<OrderDetailRequest> orderDetails) {
-        Long ordNo = orderRepositoryCustom.createOrder(mbrNo, LocalDateTime.now());
-
+        orderRepositoryCustom.createOrder(mbrNo);
+        Long ordNo = orderRepositoryCustom.getOrderNo(mbrNo);
         for (OrderDetailRequest detail : orderDetails) {
             boolean success = orderRepositoryCustom.decreaseStock(detail.getGoodsNo(), detail.getOrderQuantity());
             if (!success) {

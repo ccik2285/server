@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 public interface OrderRepositoryCustom {
 
-    Long createOrder(Long mbrNo, LocalDateTime createdAt);
+    void createOrder(Long mbrNo);
+    Long getOrderNo(Long mbrNo);
     Long createOrderDetail(Long ordNo, OrderDetailRequest orderData);
     boolean updateOrderStatus(Long ordNo, OrderStateCd orderStateCd);
     boolean decreaseStock(Long goodsNo, Long quantity);
