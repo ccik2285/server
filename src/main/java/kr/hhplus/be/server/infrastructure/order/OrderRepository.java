@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.infrastructure.order;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.common.OrderStateCd;
@@ -21,28 +22,41 @@ public class OrderRepository implements OrderRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QOrder order = QOrder.order;
     private final QOrderDtl orderDtl = QOrderDtl.orderDtl;
+    private final EntityManager entityManager;
 
-    public OrderRepository(JPAQueryFactory jpaQueryFactory) {
+    public OrderRepository(JPAQueryFactory jpaQueryFactory, EntityManager entityManager) {
         this.jpaQueryFactory = jpaQueryFactory;
+        this.entityManager = entityManager;
     }
 
     @Override
     @Transactional
-    public Long createOrder(Long mbrNo, LocalDateTime createdAt) {
-        jpaQueryFactory.insert(order)
-                .columns(order.mbrNo, order.createdAt, order.updatedAt)
-                .values(mbrNo, createdAt, createdAt)
-                .execute();
-        Order lastOrder = jpaQueryFactory.selectFrom(order)
-                .where(order.mbrNo.eq(mbrNo))
-                .orderBy(order.createdAt.desc())
-                .limit(1)
-                .fetchOne();
-
-        if (lastOrder != null) {
-            return lastOrder.getOrderNo(); // 주문번호 반환
+    public void createOrder(Long mbrNo) {
+try {
+    jpaQueryFactory.insert(order)
+            .columns(order.mbrNo)
+            .values(mbrNo)
+            .execute();
+    entityManager.flush();
+}
+        catch (Exception e) {
+            e.printStackTrace();
         }
-        throw new RuntimeException("주문 생성에 실패했습니다.");
+    }
+
+    @Override
+    public Long getOrderNo(Long mbrNo) {
+        try {
+            Order lastOrder = jpaQueryFactory.selectFrom(order)
+                    .where(order.mbrNo.eq(mbrNo))
+                    .orderBy(order.createdAt.desc())
+                    .limit(1)
+                    .fetchOne();
+            return lastOrder.getOrderNo();
+       } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
     }
 
     @Override
@@ -79,7 +93,6 @@ public class OrderRepository implements OrderRepositoryCustom {
                 .set(QGoods.goods.stockQuantity, QGoods.goods.stockQuantity.subtract(quantity))
                 .where(QGoods.goods.goodsNo.eq(goodsNo))
                 .where(QGoods.goods.stockQuantity.goe(quantity))
-                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .execute();
         return affectedRows > 0;
     }

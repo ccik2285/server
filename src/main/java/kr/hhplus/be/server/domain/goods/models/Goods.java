@@ -16,6 +16,7 @@ public class Goods extends BaseEntity {
     private long goodsNo;
 
     @Column(name = "goods_state_cd")
+    @Enumerated(EnumType.STRING)
     private GoodsStateCd goodsStateCd;
     @Column(name = "goods_nm")
     private String goodsNm;
@@ -31,5 +32,8 @@ public class Goods extends BaseEntity {
         this.goodsNm = goodsNm;
         this.stockQuantity = stockQuantity;
         this.salePrice = salePrice;
+    }
+    public Goods() {
+
     }
 }

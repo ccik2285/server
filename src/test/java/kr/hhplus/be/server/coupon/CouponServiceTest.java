@@ -44,7 +44,7 @@ public class CouponServiceTest {
                 .percentDiscount(10L)
                 .immediateDiscount(0L)
                 .totQuantity(100)
-                .stockQuantity(1)
+                .stockQuantity(2)
                 .build();
 
         Mockito.when(couponRepository.findByIdForUpdate(couponNo)).thenReturn(Optional.of(coupon));
@@ -61,12 +61,12 @@ public class CouponServiceTest {
                 .thenReturn(memberCoupon);
 
 
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
         Runnable task = () -> issueCouponUseCase.execute(mbrNo, couponNo);
 
         executorService.submit(task);
         executorService.submit(task);
-
+        executorService.submit(task);
 
 
         executorService.shutdown();
@@ -75,8 +75,8 @@ public class CouponServiceTest {
         }
 
         assertEquals(0, coupon.getStockQuantity());
-        Mockito.verify(couponRepository, Mockito.times(1)).save(coupon);
-        Mockito.verify(memberCouponRepositoryCustom, Mockito.times(1)).save(Mockito.any(MemberCoupon.class));  // MemberCoupon이 한 번만 저장되어야 함
+        Mockito.verify(couponRepository, Mockito.times(2)).save(coupon);
+        Mockito.verify(memberCouponRepositoryCustom, Mockito.times(2)).save(Mockito.any(MemberCoupon.class));  // MemberCoupon이 한 번만 저장되어야 함
     }
 
     @Test
