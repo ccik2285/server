@@ -11,9 +11,9 @@ import lombok.Getter;
 public class Order extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 방식 사용
     @Column(name = "order_no")
-    private long orderNo;
+    private Long orderNo;
 
     @Column(name = "mbr_no")
     private long mbrNo;

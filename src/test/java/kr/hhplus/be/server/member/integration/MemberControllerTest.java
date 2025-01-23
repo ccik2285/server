@@ -55,7 +55,7 @@ public class MemberControllerTest {
     private MemberPointService memberPointService;
 
     @Mock
-    private IssueCouponUseCase issueCouponUseCase;
+    private CouponService couponService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -77,7 +77,7 @@ public class MemberControllerTest {
         Long expectedBalance = 1000L;
 
         // when
-        when(getBalanceUseCase.execute(mbrNo)).thenReturn(expectedBalance);
+        when(memberPointService.getBalance(mbrNo)).thenReturn(expectedBalance);
 
         // execute
         ResponseEntity<Long> response = memberController.getBalance(mbrNo);
@@ -105,7 +105,7 @@ public class MemberControllerTest {
         Long mbrNo = 1L;
         Long couponNo = 100L;
 
-        when(issueCouponUseCase.execute(mbrNo, couponNo)).thenReturn(true);
+        when(couponService.issueCoupon(mbrNo, couponNo)).thenReturn(true);
 
         ResponseEntity<String> response = memberController.issueCoupon(mbrNo, couponNo);
 
@@ -119,7 +119,7 @@ public class MemberControllerTest {
         Long mbrNo = 1L;
         Long couponNo = 100L;
 
-        when(issueCouponUseCase.execute(mbrNo, couponNo)).thenReturn(false);
+        when(couponService.issueCoupon(mbrNo, couponNo)).thenReturn(false);
 
         ResponseEntity<String> response = memberController.issueCoupon(mbrNo, couponNo);
 
