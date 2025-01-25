@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.domain.order.service;
 
+import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.order.dto.request.OrderDetailRequest;
 import kr.hhplus.be.server.domain.order.usecase.OrderUseCase;
 import org.springframework.stereotype.Service;

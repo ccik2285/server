@@ -31,40 +31,22 @@ public class OrderRepository implements OrderRepositoryCustom {
 
     @Override
     @Transactional
-    public void createOrder(Long mbrNo) {
-try {
-    jpaQueryFactory.insert(order)
-            .columns(order.mbrNo)
-            .values(mbrNo)
-            .execute();
-    entityManager.flush();
-}
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Long createOrder(Long mbrNo) {
+
+        Order newOrder = Order.builder()
+                .mbrNo(mbrNo)
+                .totalAmt(0L)
+                .build();
+        entityManager.persist(newOrder);
+        entityManager.flush();
+        return newOrder.getOrderNo();
     }
 
     @Override
-    public Long getOrderNo(Long mbrNo) {
-        try {
-            Order lastOrder = jpaQueryFactory.selectFrom(order)
-                    .where(order.mbrNo.eq(mbrNo))
-                    .orderBy(order.createdAt.desc())
-                    .limit(1)
-                    .fetchOne();
-            return lastOrder.getOrderNo();
-       } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-    }
-
-    @Override
-    @Transactional
-    public Long createOrderDetail(Long ordNo, OrderDetailRequest orderData) {
-        return jpaQueryFactory.insert(orderDtl)
-                .columns(orderDtl.orderNo, orderDtl.goodsNo, orderDtl.orderQuantity, orderDtl.orderStateCd,orderDtl.createdAt, orderDtl.updatedAt)
-                .values(ordNo, orderData.getGoodsNo(), orderData.getOrderQuantity(), OrderStateCd.ON_PROGRESS,LocalDateTime.now(), LocalDateTime.now())
+    public void createOrderDetail(Long ordNo, OrderDetailRequest orderData) {
+        jpaQueryFactory.insert(orderDtl)
+                .columns(orderDtl.orderNo, orderDtl.goodsNo, orderDtl.orderQuantity, orderDtl.createdAt, orderDtl.updatedAt)
+                .values(ordNo, orderData.getGoodsNo(), orderData.getOrderQuantity(), LocalDateTime.now(), LocalDateTime.now())
                 .execute();
     }
 
@@ -79,7 +61,9 @@ try {
     }
 
     @Override
+    @Transactional
     public boolean decreaseStock(Long goodsNo, Long quantity) {
+
         Goods goods = jpaQueryFactory.selectFrom(QGoods.goods)
                 .where(QGoods.goods.goodsNo.eq(goodsNo))
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
@@ -89,11 +73,11 @@ try {
             return false;
         }
 
-        long affectedRows = jpaQueryFactory.update(QGoods.goods)
+        long updatedRows = jpaQueryFactory.update(QGoods.goods)
                 .set(QGoods.goods.stockQuantity, QGoods.goods.stockQuantity.subtract(quantity))
                 .where(QGoods.goods.goodsNo.eq(goodsNo))
                 .where(QGoods.goods.stockQuantity.goe(quantity))
                 .execute();
-        return affectedRows > 0;
+        return updatedRows > 0;
     }
 }

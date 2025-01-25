@@ -18,7 +18,7 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate.connection.isolation: 2
+      hibernate.connection.isolation: 100
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
 
