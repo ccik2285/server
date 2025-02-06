@@ -26,6 +26,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -70,6 +75,43 @@ public class MemberControllerTest {
     }
     @InjectMocks
     private MemberController memberController;
+
+
+    @Test
+    void 포인트사용동시성테스트() throws Exception {
+        // given
+        Long mbrNo = 1L;
+        Long initialBalance = 1000L;
+        Long chargeAmount = 1000L;
+        Long useAmount = 300L;
+
+        when(memberPointService.getBalance(mbrNo)).thenReturn(700L);
+       // doNothing().when(chargeBalanceUseCase).execute(mbrNo, chargeAmount);
+
+        chargeBalanceUseCase.execute(mbrNo, chargeAmount);
+
+        int numberOfThreads = 10;
+        CountDownLatch latch = new CountDownLatch(numberOfThreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            executorService.submit(() -> {
+                try {
+                    useBalanceUseCase.execute(mbrNo, useAmount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        executorService.shutdown();
+
+        Optional<Long> finalBalance = memberPointService.getBalance(mbrNo).describeConstable();
+        assertEquals(Optional.of(700L), finalBalance);
+    }
+
 
     @Test
     void testGetBalance() throws Exception {
