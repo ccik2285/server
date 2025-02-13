@@ -1,10 +1,7 @@
 package kr.hhplus.be.server.domain.member.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.common.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +16,10 @@ public class MemberPoint extends BaseEntity {
     private long mbrNo;
     @Column(name = "available_point")
     private long availablePoint;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
 
     @Builder
     public MemberPoint(Long mbrNo,Long availablePoint){
