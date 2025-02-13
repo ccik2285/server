@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
+//@Table(name = "order_dtl", indexes = @Index(name ="idx_order_state_cd", columnList = "order_state_cd"))
 @Table(name = "order_dtl")
 public class OrderDtl extends BaseEntity {
 
@@ -26,11 +27,16 @@ public class OrderDtl extends BaseEntity {
     @Column(name = "order_state_cd")
     private OrderStateCd orderStateCd;
 
+    public OrderDtl() {
+
+    }
+
     @Builder
-    public OrderDtl(long orderNo,long goodsNo,long orderQuantity,long priceAmt) {
+    public OrderDtl(long orderNo,long goodsNo,long orderQuantity,long priceAmt,OrderStateCd orderStateCd) {
         this.orderNo = orderNo;
         this.goodsNo = goodsNo;
         this.orderQuantity = orderQuantity;
         this.priceAmt = priceAmt;
+        this.orderStateCd = orderStateCd;
     }
 }
