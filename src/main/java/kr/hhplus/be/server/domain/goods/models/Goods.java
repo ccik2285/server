@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
+//@Table(name = "goods", indexes = @Index(name ="idx_goods_no", columnList = "goods_no"))
 @Table(name = "goods")
 public class Goods extends BaseEntity {
 

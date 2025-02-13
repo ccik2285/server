@@ -14,7 +14,7 @@ spring:
   jpa:
     open-in-view: false
     generate-ddl: false
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -36,5 +36,5 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.SQL: OFF        # SQL 쿼리 로그 비활성화
+    org.hibernate.type.descriptor.sql: OFF  # 바인딩된 파라미터 로그 비활성화
