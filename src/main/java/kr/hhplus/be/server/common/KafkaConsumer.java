@@ -19,10 +19,9 @@ public class KafkaConsumer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @KafkaListener(topics = "order-status-topic", groupId = "order-status-group")
     public void consumeOrderStatus(String message) {
+        log.info("received: {}",message);
         String result = "Order completed: " + message;
         kafkaTemplate.send("order-status-topic", result);
     }

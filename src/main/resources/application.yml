@@ -31,7 +31,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: my-group
+      group-id: order-status-group
       auto-offset-reset: earliest
       enable-auto-commit: false
     producer:
