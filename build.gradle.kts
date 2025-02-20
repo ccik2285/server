@@ -46,6 +46,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
+	testImplementation("org.testcontainers:kafka:1.17.5")  // Kafka 관련 TestContainer 의존성 추가
+	testImplementation("org.springframework.kafka:spring-kafka-test")  // Kafka 테스트를 위한 의존성 추가
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// lombok
@@ -57,13 +59,15 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
 	// QueryDSL
-	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
-	annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
-	annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
 	// redis
-	implementation ("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	// Kafka
+	implementation("org.springframework.kafka:spring-kafka")
 }
 
 tasks.withType<Test> {
