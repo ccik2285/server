@@ -3,6 +3,7 @@ spring:
     name: hhplus
   profiles:
     active: local
+
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
@@ -11,6 +12,7 @@ spring:
       connection-timeout: 10000
       max-lifetime: 60000
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     open-in-view: false
     generate-ddl: false
@@ -21,18 +23,31 @@ spring:
       hibernate.connection.isolation: 100
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
-    redis:
-      host: localhost
-      port: 6379
----
-spring.config.activate.on-profile: local, test
 
+  redis:
+    host: localhost
+    port: 6379
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      retries: 3
+      acks: all
+
+---
 spring:
+  config:
+    activate:
+      on-profile: local, test
+
   datasource:
     url: jdbc:mysql://localhost:3306/ecommerce?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 1234
-
 
 logging:
   level:
